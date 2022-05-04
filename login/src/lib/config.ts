@@ -1,0 +1,1 @@
+export const AUTH_API_DEV = 'http://localhost:5000';
