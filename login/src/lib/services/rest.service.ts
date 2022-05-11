@@ -4,7 +4,6 @@ export async function postMethod<T>(url: string, body: T) {
         headers: {
             'Content-Type': 'application/json',
             'agent': 'RestClient',
-            'x-api-key': '123456789'
         },
         body: JSON.stringify(body)
     });
@@ -15,8 +14,7 @@ export async function getMethod(url: string) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'agent': 'RestClient',
-            'x-api-key': '123456789'
+            'agent': 'RestClient'
         }
     });
 }
@@ -26,8 +24,7 @@ export async function putMethod<T>(url: string, body: T) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'agent': 'RestClient',
-            'x-api-key': '123456789'
+            'agent': 'RestClient'
         },
         body: JSON.stringify(body)
     });
@@ -38,8 +35,7 @@ export async function deleteMethod(url: string) {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'agent': 'RestClient',
-            'x-api-key': '123456789'
+            'agent': 'RestClient'
         },
     });
 }

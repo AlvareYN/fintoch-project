@@ -6,8 +6,8 @@ COPY dist ./
 
 ENV JWT_SECRET=holamundooo
 ENV PORT=4000
-ENV DATABASE_HOST=172.18.0.2
-
+ENV DATABASE_HOST=postgres
+ENV NODE_ENV=prod
 
 RUN npm install ci --only=production
 

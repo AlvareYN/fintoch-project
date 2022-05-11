@@ -1,12 +1,4 @@
 version: '3.1'
-networks:
-  service-net:
-    name: vpc
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.22.0.0/24
-          gateway: 172.22.0.1
 services:
   db:
     container_name: postgres
@@ -17,25 +9,18 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - db:/var/lib/postgresql/data
-    networks:
-      service-net:
-        ipv4_address: 172.22.0.3
+    ports:
+      - "5432:5432"
 
   auth-api:
     container_name: auth-api
     build:
       context: ./login-api
-    networks:
-      service-net:
-        ipv4_address: 172.22.0.4
 
   login:
     container_name: login
     build:
       context: ./login
-    networks:
-      service-net:
-        ipv4_address: 172.22.0.5
 
   api-gateway:
     container_name: api-gateway
@@ -45,9 +30,6 @@ services:
       - "./api-gateway/default.conf:/etc/nginx/conf.d/default.conf"
     ports:
       - "8080:80"
-    networks:
-      service-net:
-        ipv4_address: 172.22.0.6
 
 volumes:
   db:
