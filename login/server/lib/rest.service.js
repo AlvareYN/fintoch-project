@@ -1,15 +1,18 @@
-export async function postMethod<T>(url: string, body: T) {
+import fetch from 'node-fetch';
+
+export async function postMethod(url, body, headers) {
     return await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'agent': 'RestClient',
+            ...headers
         },
         body: JSON.stringify(body)
     });
 }
 
-export async function getMethod(url: string) {
+export async function getMethod(url) {
     return await fetch(url, {
         method: 'GET',
         headers: {
@@ -19,7 +22,7 @@ export async function getMethod(url: string) {
     });
 }
 
-export async function putMethod<T>(url: string, body: T) {
+export async function putMethod(url, body) {
     return await fetch(url, {
         method: 'PUT',
         headers: {
@@ -30,7 +33,7 @@ export async function putMethod<T>(url: string, body: T) {
     });
 }
 
-export async function deleteMethod(url: string) {
+export async function deleteMethod(url) {
     return await fetch(url, {
         method: 'DELETE',
         headers: {

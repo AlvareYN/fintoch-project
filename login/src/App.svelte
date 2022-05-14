@@ -9,7 +9,7 @@
 	async function handleOnSubmit(e: Event) {
 		e.preventDefault();
 
-		const response = await fetch('/api/login', {
+		const response = await fetch('/auth', {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				email: email,
@@ -17,10 +17,13 @@
 			}),
 			method: 'POST'
 		});
-
 		const data = await response.json();
 		console.log(data);
-		console.log(document.cookie)
+		
+		if (response.status === 200){
+			location.reload()
+		}
+		
 	}
 
 	onMount(() => {
@@ -61,7 +64,7 @@
 					<div class="buttons">
 						<button class="button is-info">Sign In</button>
 						<div class="bottom">
-							<a href="#">Forgot Password?</a>
+							<a href="/">Forgot Password?</a>
 						</div>
 					</div>
 				</form>
