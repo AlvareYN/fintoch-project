@@ -28,4 +28,8 @@ export class UserAuth {
         nullable: true
     })
     updatedAt: Date;
+    @Column('date',{
+        nullable: false
+    })
+    expiresAt: Date;
 }

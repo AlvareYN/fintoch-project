@@ -51,8 +51,10 @@ export class AuthController {
         if (token) {
             const result = await this.authService.validateJWT(token);
             res.status(200).json(result);
+        } else {
+            throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
         }
-        throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+
     }
 }
 

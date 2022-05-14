@@ -24,6 +24,7 @@ export class AuthService {
                     authUser.devices.push(ip);
                 }
                 authUser.lastLogin = new Date();
+                authUser.expiresAt = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
                 this.log.log(`User ${authUser.userId} authenticated returning user metadata`);
                 const saveUser = await this.usersRepository.save(authUser)
                 const payload = {
@@ -34,7 +35,6 @@ export class AuthService {
             }
             throw new HttpException(`User with id ${authUser.userId} fails to authenticate`, HttpStatus.UNAUTHORIZED);
         } catch (error) {
-            console.log(error)
             this.log.error(error);
             throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
         }
@@ -62,6 +62,7 @@ export class AuthService {
         authUser.active = true;
         authUser.createdAt = new Date();
         authUser.updatedAt = null;
+        authUser.expiresAt = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
         return authUser;
     }
 
