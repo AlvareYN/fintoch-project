@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsUUID, Matches, MaxLength } from "class-validator";
+import { IsEmail, IsHash, IsNotEmpty, IsUUID, Matches, MaxLength } from "class-validator";
 
 export class AuthDto {
     @IsNotEmpty()
@@ -13,7 +13,7 @@ export class AuthDto {
 
 export class AuthUserDTO {
     @IsNotEmpty()
-    @IsUUID()
+    @IsHash('sha256')
     userId?: string;
     @IsNotEmpty()
     @IsEmail()
