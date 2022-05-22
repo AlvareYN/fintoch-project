@@ -1,8 +1,8 @@
+/node_modules/
+/public/build/
+
 .DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
+combined.log
+error.log
 .env
-.env.*
-!.env.example
+.vscode
