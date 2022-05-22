@@ -16,8 +16,6 @@ export class UserAuth {
         nullable: true
     })
     lastLogin: Date;
-    @Column("simple-array")
-    devices: string[]
     @Column("boolean")
     active: boolean;
     @Column("date", {
@@ -28,7 +26,7 @@ export class UserAuth {
         nullable: true
     })
     updatedAt: Date;
-    @Column('date',{
+    @Column('date', {
         nullable: false
     })
     expiresAt: Date;

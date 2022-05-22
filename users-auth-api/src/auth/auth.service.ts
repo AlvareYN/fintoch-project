@@ -14,15 +14,13 @@ export class AuthService {
         private usersRepository: Repository<UserAuth>,
         private jwtService: JwtService) { }
 
-    async authenticate(authUserDTO: AuthDto, ip: string): Promise<string> {
+    async authenticate(authUserDTO: AuthDto): Promise<string> {
         try {
             const authUser: UserAuth = await this.usersRepository.findOne({ where: { email: authUserDTO.email } });
             if (!authUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
             if (!authUser.active) throw new HttpException('User is not active', HttpStatus.UNAUTHORIZED);
             if (await argon2.verify(authUser.hash, authUserDTO.password)) {
-                if (!authUser.devices.includes(ip)) {
-                    authUser.devices.push(ip);
-                }
+
                 authUser.lastLogin = new Date();
                 authUser.expiresAt = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
                 this.log.log(`User ${authUser.userId} authenticated returning user metadata`);
@@ -38,32 +36,6 @@ export class AuthService {
             this.log.error(error);
             throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
         }
-    }
-
-
-    async createAuth(authUserDTO: AuthUserDTO, ip: string): Promise<void> {
-        try {
-            await this.usersRepository.insert(await this.mapEntitieFromDTO(authUserDTO, ip));
-        } catch (err) {
-            this.log.error(err);
-            throw new HttpException(err.detail, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    private async mapEntitieFromDTO(authUserDTO: AuthUserDTO, ip: string): Promise<UserAuth> {
-        this.log.log(`Hashing user ${authUserDTO.userId}`)
-        const hash = await argon2.hash(authUserDTO.password);
-        const authUser: UserAuth = new UserAuth();
-        authUser.userId = authUserDTO.userId;
-        authUser.hash = hash
-        authUser.email = authUserDTO.email;
-        authUser.lastLogin = null;
-        authUser.devices = [ip];
-        authUser.active = true;
-        authUser.createdAt = new Date();
-        authUser.updatedAt = null;
-        authUser.expiresAt = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
-        return authUser;
     }
 
     async updatePassword(userId: string, password: string): Promise<void> {

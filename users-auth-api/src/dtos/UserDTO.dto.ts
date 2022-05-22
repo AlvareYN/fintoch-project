@@ -1,17 +1,5 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber, Matches, MaxLength } from "class-validator";
 
-export interface UserSchema {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    address: string;
-    birthDate: Date;
-    phone: string;
-    country: string;
-    city: string;
-}
-
 export class UserDTO {
     @IsNotEmpty()
     firstName: string;
@@ -36,3 +24,15 @@ export class UserDTO {
     city: string;
 }
 
+
+export interface UserResponseDTO{
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    address: string;
+    birthDate: Date;
+    phone: string;
+    country: string;
+    city: string;
+}

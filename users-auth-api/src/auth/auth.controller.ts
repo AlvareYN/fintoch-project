@@ -13,20 +13,12 @@ export class AuthController {
         @Res() res: any,
         @Req() request: Request) {
         const ip: string = request.socket.remoteAddress || request.headers['x-forwarded-for'][0]
-        const token = await this.authService.authenticate(authUserDTO, ip);
+        const token = await this.authService.authenticate(authUserDTO);
         res.status(200).json({
             access_token: token,
         });
     }
 
-    @Post("/register")
-    async register(@Req() request: Request,
-        @Body() authUserDTO: AuthUserDTO,
-        @Res() res: any) {
-        const ip: string = request.socket.remoteAddress || request.headers['x-forwarded-for'][0]
-        await this.authService.createAuth(authUserDTO, ip);
-        res.status(201).json({ message: 'Created' });
-    }
     //system scope
     @Put("/update-password/:userId")
     async resetPassword(@Body() passwordBody: PasswordChangeDTO,

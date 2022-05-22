@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { UserDTO, UserSchema } from 'src/utils/types.utils';
+import { UserDTO } from 'src/dtos/UserDTO.DTO';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -14,9 +14,9 @@ export class UserController {
 
     @Get("/:userId")
     async getUser(@Param("userId") userId: string, @Res() res: Response) {
-        const user = await this.userService.getUser(userId) as UserSchema; 
+        const user = await this.userService.getUser(userId); 
         res.status(200).send(user);
     }
 
-
+    
 }

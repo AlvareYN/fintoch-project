@@ -1,18 +1,13 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from './user.controller';
+import { UserData } from './user.entity';
 import { UserService } from './user.service';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { HttpModule } from '@nestjs/axios';
+
 
 @Module({
   imports: [
-    RedisModule.forRoot({
-      config: {
-        host: 'localhost',
-        port: 6379,
-      }
-    }),
-    HttpModule
+    TypeOrmModule.forFeature([UserData]),
   ],
   controllers: [UserController],
   providers: [UserService]
