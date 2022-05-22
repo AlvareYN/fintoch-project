@@ -6,7 +6,6 @@ import { UserAuth } from 'src/auth/auth.entity';
 import { Repository } from 'typeorm';
 import { UserDTO, UserResponseDTO } from 'src/dtos/UserDTO.DTO';
 import { UserData } from './user.entity';
-import { AuthService } from 'src/auth/auth.service';
 import { AuthUserDTO } from 'src/dtos/AuthUser.dto';
 
 @Injectable()
@@ -19,8 +18,7 @@ export class UserService {
     async saveUser(user: UserDTO): Promise<any> {
         const userId = crypto.createHmac('sha256', process.env.SECRET_KEY).update(user.email).digest('hex');
         const userData = await this.generateUserData(user, userId);
-        const result = await this.userRepository.insert(userData);
-        console.log(result)
+        await this.userRepository.save(userData);
         this.logger.log(`userId ${userId} saved in the database`);
         return userId;
     }

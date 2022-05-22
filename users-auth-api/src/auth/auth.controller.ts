@@ -24,7 +24,7 @@ export class AuthController {
     async resetPassword(@Body() passwordBody: PasswordChangeDTO,
         @Param('userId') userId: string,
         @Res() res: any) {
-        await this.authService.updatePassword(userId, passwordBody.password);
+        await this.authService.updatePassword(userId, passwordBody);
         res.status(200).json({ message: 'OK' });
     }
 

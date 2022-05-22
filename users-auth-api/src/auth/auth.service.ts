@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as argon2 from 'argon2';
-import { AuthDto, AuthUserDTO } from 'src/dtos/AuthUser.dto';
+import { AuthDto } from 'src/dtos/AuthUser.dto';
+import { PasswordChangeDTO } from 'src/dtos/PasswordChange.dto';
 import { Repository } from 'typeorm';
 import { UserAuth } from './auth.entity';
 
@@ -38,16 +39,23 @@ export class AuthService {
         }
     }
 
-    async updatePassword(userId: string, password: string): Promise<void> {
+    //bad
+    async updatePassword(userId: string, changePasswordDTO: PasswordChangeDTO): Promise<void> {
         try {
             const authUser: UserAuth = await this.usersRepository.findOne({ where: { userId: userId } });
             if (!authUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-            authUser.hash = await argon2.hash(password);
+
+            const result = await argon2.verify(authUser.hash, changePasswordDTO.oldPassword);
+
+            if (!result) throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+            authUser.hash = await argon2.hash(changePasswordDTO.password);
             authUser.updatedAt = new Date();
+
             await this.usersRepository.save(authUser);
         } catch (error) {
             this.log.error(error);
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+            throw new HttpException(error.message, error.status);
         }
 
     }

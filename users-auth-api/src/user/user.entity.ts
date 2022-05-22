@@ -26,7 +26,10 @@ export class UserData {
     country: string;
     @Column("text")
     city: string;
-    @OneToOne(() => UserAuth)
+    @OneToOne(() => UserAuth, {
+        cascade: ["insert"]
+
+    })
     userAuth: UserAuth;
 }
 
